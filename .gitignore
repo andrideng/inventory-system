@@ -1,0 +1,9 @@
+.vscode
+vendor/*
+.DS_Store
+
+.glide
+glide.lock
+coverage.out
+coverage-all.out
+server

@@ -1,0 +1,5 @@
+# data source name for the database
+# in production environment variable: APP_DSN
+dialect: "sqlite3"
+dsn: "db/inventory_system.db"
+server_port: 8080
