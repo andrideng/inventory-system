@@ -1,5 +1,13 @@
 # GO RESTful Inventory System
 
+## Features
+
+* Stores actual stock of products
+* To store product that will be stored into the inventory.
+* To store product, quantity, notes of the products going out of inventory
+* Shows a report to help analyze and make decision. This report is related to total inventory value.
+* Shows a report to help analyze and make decision. This report is related to omzet / selling / profit.
+
 ## Getting Started
 
 If this is your first time encountering Go, please follow [the instructions](https://golang.org/doc/install) to
@@ -29,6 +37,9 @@ The application runs as an HTTP server at port 8080. It provides the following R
 
 * `GET /api/`: welcoming text api
 * `GET /api/ping`: a ping service mainly provided for health check purpose
+* `GET /api/products`: list all products
+* `GET /api/products/:sku`: get product based on the sku
+* `POST /api/products`: create product
 
 For example, if you access the URL `http://localhost:8080/api/ping` in a browser, you should see the browser
 displays something like `PONG!`.

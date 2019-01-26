@@ -8,8 +8,11 @@ import (
 	"github.com/go-ozzo/ozzo-routing/content"
 	"github.com/go-ozzo/ozzo-routing/cors"
 
+	"github.com/andrideng/inventory-system/apis"
 	"github.com/andrideng/inventory-system/app"
+	"github.com/andrideng/inventory-system/daos"
 	"github.com/andrideng/inventory-system/errors"
+	"github.com/andrideng/inventory-system/services"
 	routing "github.com/go-ozzo/ozzo-routing"
 
 	_ "github.com/mattn/go-sqlite3"
@@ -71,6 +74,10 @@ func buildRouter(logger *logrus.Logger, db *dbx.DB) *routing.Router {
 	rg.Get("/ping", func(c *routing.Context) error {
 		return c.Write("PONG!")
 	})
+
+	// - products endpoint
+	productDAO := daos.NewProductDAO()
+	apis.ServerProductResource(rg, services.NewProductService(productDAO))
 
 	return router
 }
