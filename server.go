@@ -90,5 +90,8 @@ func buildRouter(logger *logrus.Logger, db *dbx.DB) *routing.Router {
 	// - reports endpoint
 	apis.ServerReportResource(rg, services.NewReportService(productDAO, outgoingGoodsDAO))
 
+	// - import csv endping
+	apis.ServerImportCsvResource(rg, services.NewImportCsvService(productDAO, incomingGoodsDAO))
+
 	return router
 }

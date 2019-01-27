@@ -42,6 +42,15 @@ func (m *mockProductDAO) Create(rs app.RequestScope, product *models.Product) er
 	return nil
 }
 
+func (m *mockProductDAO) Update(rs app.RequestScope, sku string, product *models.Product) (*models.Product, error) {
+	for i, record := range m.records {
+		if record.SKU == sku {
+			return &m.records[i], nil
+		}
+	}
+	return nil, errors.New("not found")
+}
+
 // START TEST
 func TestNewProductService(t *testing.T) {
 	dao := newMockProductDAO()
@@ -57,7 +66,7 @@ func TestProductService_List(t *testing.T) {
 	}
 }
 
-func TestAritstService_Get(t *testing.T) {
+func TestProductService_Get(t *testing.T) {
 	s := NewProductService(newMockProductDAO())
 	product, err := s.Get(nil, "EFGH")
 	if assert.Nil(t, err) && assert.NotNil(t, product) {

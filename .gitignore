@@ -8,4 +8,4 @@ coverage.out
 coverage-all.out
 server
 
-*.csv
+reports/*
