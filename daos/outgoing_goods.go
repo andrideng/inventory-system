@@ -3,6 +3,8 @@ package daos
 import (
 	"github.com/andrideng/inventory-system/app"
 	"github.com/andrideng/inventory-system/models"
+	"github.com/andrideng/inventory-system/util"
+	dbx "github.com/go-ozzo/ozzo-dbx"
 )
 
 // OutgoingGoodsDAO presists outgoing goods data in database
@@ -21,9 +23,21 @@ func (dao *OutgoingGoodsDAO) Get(rs app.RequestScope, id int64) (*models.Outgoin
 }
 
 // List retrives outgoing goods record from the database.
-func (dao *OutgoingGoodsDAO) List(rs app.RequestScope) ([]models.OutgoingGoods, error) {
+func (dao *OutgoingGoodsDAO) List(rs app.RequestScope, params *util.QueryParam) ([]models.OutgoingGoods, error) {
 	outgoingGoods := []models.OutgoingGoods{}
-	err := rs.Tx().Select().All(&outgoingGoods)
+	var err error
+	if params.StartDate == "" || params.EndDate == "" {
+		err = rs.Tx().Select().All(&outgoingGoods)
+	} else {
+		err = rs.Tx().Select().Where(
+			dbx.NewExp(
+				"created_at >= {:start_date} and created_at <= {:end_date}",
+				dbx.Params{"start_date": params.StartDate, "end_date": params.EndDate},
+			),
+		).All(&outgoingGoods)
+
+	}
+
 	return outgoingGoods, err
 }
 

@@ -5,6 +5,7 @@ import (
 
 	"github.com/andrideng/inventory-system/app"
 	"github.com/andrideng/inventory-system/models"
+	"github.com/andrideng/inventory-system/util"
 )
 
 // outgoingGoodsDAO specifies the interface of the outgoing goods DAO nedded by OutogingGoodsService.
@@ -12,7 +13,7 @@ type outgoingGoodsDAO interface {
 	// Get return outgoing goods with the specified outgoing goods id.
 	Get(rs app.RequestScope, id int64) (*models.OutgoingGoods, error)
 	// List return the list of the outgoing goods.
-	List(rs app.RequestScope) ([]models.OutgoingGoods, error)
+	List(rs app.RequestScope, params *util.QueryParam) ([]models.OutgoingGoods, error)
 	// Create for add a new outgoing goods
 	Create(rs app.RequestScope, outgoingGoods *models.OutgoingGoods) error
 }
@@ -34,8 +35,8 @@ func (s *OutgoingGoodsService) Get(rs app.RequestScope, id int64) (*models.Outgo
 }
 
 // List returns the list of incoming goods
-func (s *OutgoingGoodsService) List(rs app.RequestScope) ([]models.OutgoingGoods, error) {
-	return s.dao.List(rs)
+func (s *OutgoingGoodsService) List(rs app.RequestScope, params *util.QueryParam) ([]models.OutgoingGoods, error) {
+	return s.dao.List(rs, params)
 }
 
 // Create creates new outgoing goods

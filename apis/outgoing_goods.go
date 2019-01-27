@@ -3,6 +3,7 @@ package apis
 import (
 	"github.com/andrideng/inventory-system/app"
 	"github.com/andrideng/inventory-system/models"
+	"github.com/andrideng/inventory-system/util"
 	"github.com/go-ozzo/ozzo-routing"
 )
 
@@ -10,7 +11,7 @@ type (
 	// outgoingGoodsService specifies the interface for outgoing goods service needed by outgoingGoodsResource
 	outgoingGoodsService interface {
 		Get(rs app.RequestScope, id int64) (*models.OutgoingGoods, error)
-		List(rs app.RequestScope) ([]models.OutgoingGoods, error)
+		List(rs app.RequestScope, params *util.QueryParam) ([]models.OutgoingGoods, error)
 		Create(rs app.RequestScope, model *models.OutgoingGoods) (*models.OutgoingGoods, error)
 	}
 
@@ -28,7 +29,11 @@ func ServerOutgoingGoodsResource(rg *routing.RouteGroup, service outgoingGoodsSe
 }
 
 func (r *outgoingGoodsResource) list(c *routing.Context) error {
-	response, err := r.service.List(app.GetRequestScope(c))
+	params := &util.QueryParam{
+		StartDate: c.Query("start_date"),
+		EndDate:   c.Query("end_date"),
+	}
+	response, err := r.service.List(app.GetRequestScope(c), params)
 	if err != nil {
 		return err
 	}

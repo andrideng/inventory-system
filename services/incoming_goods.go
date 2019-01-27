@@ -2,6 +2,7 @@ package services
 
 import (
 	"errors"
+	"math"
 	"strconv"
 	"time"
 
@@ -71,6 +72,9 @@ func (s *IncomingGoodsService) Create(rs app.RequestScope, model *models.Incomin
 	}
 	// - update product stocks
 	product.Amount += model.AmountReceived
+	product.TotalIncomingAmount += model.AmountReceived
+	product.TotalIncomingPrice += float64(model.AmountReceived) * model.PurchasePrice
+	product.AveragePurchasePrice = int64(math.Round((product.TotalIncomingPrice / float64(product.TotalIncomingAmount) * 100) / 100))
 	product.UpdatedAt = rs.CurrentDateTime()
 	// - perform update product
 	if _, err := s.prodDao.Update(rs, model.SKU, product); err != nil {
@@ -113,6 +117,7 @@ func (s *IncomingGoodsService) Update(rs app.RequestScope, id int64, model *mode
 	model.UpdatedAt = rs.CurrentDateTime()
 
 	// - update amount received
+	amountReceived := model.AmountReceived
 	model.AmountReceived += incomingGoods.AmountReceived
 
 	// - perform update incoming goods
@@ -126,7 +131,11 @@ func (s *IncomingGoodsService) Update(rs app.RequestScope, id int64, model *mode
 		return nil, err
 	}
 	// - upate stock
-	product.Amount += model.AmountReceived
+	product.Amount += amountReceived
+	product.TotalIncomingAmount += amountReceived
+	product.TotalIncomingPrice -= float64(incomingGoods.AmountReceived) * incomingGoods.PurchasePrice
+	product.TotalIncomingPrice += float64(model.AmountReceived) * incomingGoods.PurchasePrice
+	product.AveragePurchasePrice = int64(math.Round((product.TotalIncomingPrice / float64(product.TotalIncomingAmount) * 100) / 100))
 	product.UpdatedAt = rs.CurrentDateTime()
 	// - perform update product
 	if _, err := s.prodDao.Update(rs, incomingGoods.SKU, product); err != nil {

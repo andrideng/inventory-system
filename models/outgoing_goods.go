@@ -5,6 +5,7 @@ import validation "github.com/go-ozzo/ozzo-validation"
 // OutgoingGoods represents an outgoing_goods table.
 type OutgoingGoods struct {
 	ID        int64   `json:"id" db:"pk,id"`
+	OrderID   string  `json:"order_id" db:"order_id"`
 	SKU       string  `json:"sku" db:"sku"`
 	Amount    int64   `json:"amount" db:"amount"`
 	Price     float64 `json:"price" db:"price"`
@@ -22,6 +23,7 @@ func (m OutgoingGoods) TableName() string {
 // Validate validate the OutgoingGoods Field
 func (m OutgoingGoods) Validate() error {
 	return validation.ValidateStruct(&m,
+		validation.Field(&m.OrderID, validation.Required, validation.Length(0, 100)),
 		validation.Field(&m.SKU, validation.Required, validation.Length(0, 100)),
 		validation.Field(&m.Amount, validation.Required, validation.Min(0)),
 		validation.Field(&m.Price, validation.Required, validation.Min(0.0)),

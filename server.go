@@ -87,5 +87,8 @@ func buildRouter(logger *logrus.Logger, db *dbx.DB) *routing.Router {
 	outgoingGoodsDAO := daos.NewOutgoingGoodsDAO()
 	apis.ServerOutgoingGoodsResource(rg, services.NewOutgoingGoodsService(outgoingGoodsDAO, productDAO))
 
+	// - reports endpoint
+	apis.ServerReportResource(rg, services.NewReportService(productDAO, outgoingGoodsDAO))
+
 	return router
 }
