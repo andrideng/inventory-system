@@ -100,6 +100,6 @@ func (s *ImportCsvService) ImportIncomingGoods(rs app.RequestScope) ([]models.In
 			}
 		}
 		idx++
-	}]
+	}
 	return s.incomingGoodsDAO.List(rs)
 }
