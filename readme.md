@@ -49,6 +49,8 @@ The application runs as an HTTP server at port 8080. It provides the following R
 * `GET /api/reports/sales?start_date=2019-01-01&end_date=2019-01-31`: generate and response sales report
 * `GET /api/import-products`: import product based on storages/products.csv.
 
+API Documentation [https://documenter.getpostman.com/view/528724/RztitVGv]
+
 
 For example, if you access the URL `http://localhost:8080/api/ping` in a browser, you should see the browser
 displays something like `PONG!`.
