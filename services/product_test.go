@@ -3,7 +3,6 @@ package services
 import (
 	"errors"
 	"testing"
-	"time"
 
 	"github.com/andrideng/inventory-system/app"
 	"github.com/andrideng/inventory-system/models"
@@ -18,9 +17,9 @@ type mockProductDAO struct {
 func newMockProductDAO() productDAO {
 	return &mockProductDAO{
 		records: []models.Product{
-			{SKU: "ABCD", Name: "Product-01", Amount: 10, CreatedAt: time.Now(), UpdatedAt: time.Now()},
-			{SKU: "EFGH", Name: "Product-02", Amount: 20, CreatedAt: time.Now(), UpdatedAt: time.Now()},
-			{SKU: "IJKL", Name: "Product-03", Amount: 30, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			{SKU: "ABCD", Name: "Product-01", Amount: 10},
+			{SKU: "EFGH", Name: "Product-02", Amount: 20},
+			{SKU: "IJKL", Name: "Product-03", Amount: 30},
 		},
 	}
 }

@@ -1,8 +1,6 @@
 package services
 
 import (
-	"time"
-
 	"github.com/andrideng/inventory-system/app"
 	"github.com/andrideng/inventory-system/models"
 )
@@ -15,9 +13,11 @@ type productDAO interface {
 	List(rs app.RequestScope) ([]models.Product, error)
 	// Create saves a new product in the storage.
 	Create(rs app.RequestScope, product *models.Product) error
+	// Update updates product in the storage.
+	Update(rs app.RequestScope, sku string, product *models.Product) (*models.Product, error)
 }
 
-// ProductService provides servies related with products.
+// ProductService provides services related with products.
 type ProductService struct {
 	dao productDAO
 }
@@ -42,10 +42,23 @@ func (s *ProductService) Create(rs app.RequestScope, model *models.Product) (*mo
 	if err := model.Validate(); err != nil {
 		return nil, err
 	}
-	model.CreatedAt = time.Now().Format(time.RFC3339)
-	model.UpdatedAt = time.Now().Format(time.RFC3339)
+	model.CreatedAt = rs.CurrentDateTime()
+	model.UpdatedAt = rs.CurrentDateTime()
 	if err := s.dao.Create(rs, model); err != nil {
 		return nil, err
 	}
 	return s.dao.Get(rs, model.SKU)
+}
+
+// Update updates a product based on sku.
+func (s *ProductService) Update(rs app.RequestScope, sku string, model *models.Product) (*models.Product, error) {
+	if _, err := s.dao.Get(rs, sku); err != nil {
+		return nil, err
+	}
+	// - updated at
+	model.UpdatedAt = rs.CurrentDateTime()
+	if _, err := s.dao.Update(rs, sku, model); err != nil {
+		return nil, err
+	}
+	return s.dao.Get(rs, sku)
 }

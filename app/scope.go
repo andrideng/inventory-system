@@ -21,6 +21,8 @@ type RequestScope interface {
 	SetRollback(bool)
 	// Now return the timestamp representating the time when the request is being processed
 	Now() time.Time
+	// CurrentDateTime return the current date time string
+	CurrentDateTime() string
 }
 
 type requestScope struct {
@@ -53,6 +55,10 @@ func (rs *requestScope) SetRollback(v bool) {
 
 func (rs *requestScope) Now() time.Time {
 	return rs.now
+}
+
+func (rs *requestScope) CurrentDateTime() string {
+	return time.Now().Format(time.RFC3339)
 }
 
 // newRequestScope creates a new RequestScope with the current request information
