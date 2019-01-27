@@ -40,6 +40,15 @@ The application runs as an HTTP server at port 8080. It provides the following R
 * `GET /api/products`: list all products
 * `GET /api/products/:sku`: get product based on the sku
 * `POST /api/products`: create product
+* `GET /api/incoming-goods`: list all incoming-goods
+* `POST /api/incoming-goods`: create incoming-goods
+* `PUT /api/outgoing-goods/:id`: update outgoing-goods based on id
+* `GET /api/outgoing-goods`: list all outgoing-goods
+* `POST /api/incoming-goods`: create incoming-goods
+* `GET /api/reports/value-of-goods`: generate and response value of goods reports
+* `GET /api/reports/sales?start_date=2019-01-01&end_date=2019-01-31`: generate and response sales report
+* `GET /api/import-products`: import product based on storages/products.csv.
+
 
 For example, if you access the URL `http://localhost:8080/api/ping` in a browser, you should see the browser
 displays something like `PONG!`.
